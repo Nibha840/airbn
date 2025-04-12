@@ -13,19 +13,9 @@ const listingSchema = new Schema({
     },
 
     image: {
-        filename:{
-            type: String,
-            default:"listingimage"
-        },
-        url:{
-            type:String,
-            default:
-              "https://pixabay.com/photos/coast-landscape-nature-ocean-sea-1867704/",
-            set: (v) =>
-              v === ""
-                ? "https://pixabay.com/photos/coast-landscape-nature-ocean-sea-1867704/"
-                : v,
-    }},
+      url: String,
+      filename: String,
+    },
 
     price: Number,
     location: String,
@@ -40,6 +30,17 @@ const listingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
+    geometry: {
+        type: {
+          type: String, // Don't do `{ location: { type: String } }`
+          enum: ['Point'], // 'location.type' must be 'Point'
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+      }
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
